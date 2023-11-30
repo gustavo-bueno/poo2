@@ -26,6 +26,5 @@ export const updateSerie = async (serieData) => {
 };
 
 export const deleteSerie = async (id) => {
-  const { data } = await client.delete(`/series/${id}`);
-  return data;
+  await client.delete(`/series/${id}`);
 };

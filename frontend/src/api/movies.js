@@ -26,6 +26,5 @@ export const updateMovie = async (movieData) => {
 };
 
 export const deleteMovie = async (id) => {
-  const { data } = await client.delete(`/movies/${id}`);
-  return data;
+  await client.delete(`/movies/${id}`);
 };
