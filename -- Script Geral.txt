@@ -1,0 +1,508 @@
+-- Script Geral
+
+create database netprime;
+use netprime;
+
+-- Creates
+
+create table Plano(
+	id int primary key,
+	qtd_conexoes int not null,
+	preco float not null,
+	descricao varchar(500) not null
+);
+
+create table Usuario(
+	email varchar(35) primary key,
+	senha varchar(35) not null,
+	nome varchar(30) not null,
+	plano int
+);
+
+create table Serie(
+	id int primary key,
+	nome varchar(40) not null,
+	qtd_episodios int not null,
+	avaliacao float,
+	sinopse text,
+	genero int not null
+);
+
+create table Filme(
+	id int primary key,
+	nome varchar(100) not null,
+	duracao int not null,
+	avaliacao float,
+	sinopse text,
+	genero int not null
+);
+
+create table Genero(
+	id int primary key,
+	descricao text not null,
+	nome varchar(50)
+);
+
+create table Backup_serie(
+	id_serie int primary key,
+	nome varchar(100) not null,
+	qtd_episodios int not null,
+	avaliacao float,
+	sinopse text,
+	genero int not null,
+	Data_backup timestamp not null, 
+	usuario_backup varchar(50) not null
+);
+
+create table Backup_filme(
+	id_filme int primary key,
+	nome varchar(100) not null,
+	duracao int not null,
+	avaliacao float,
+	sinopse text,
+	genero int not null,
+	Data_backup timestamp not null, 
+	usuario_backup varchar(50) not null
+);
+
+-- Alter Table
+
+alter table Filme add constraint genero foreign key(genero) references Genero(id);
+alter table Serie add constraint genero foreign key(genero) references Genero(id);
+alter table Usuario add constraint plano foreign key(plano) references Plano(id);
+
+-- Inserts
+
+insert into Plano (id, qtd_conexoes, preco, descricao) values	
+	(1, 1, 20.00, 'Plano básico com apenas um acesso para telas e streaming com qualidade de vídeo 720p.'),
+	(2, 2, 30.00, 'Plano intermediário com dois acessos para telas e streaming com qualidade de vídeo 1080p.'),
+	(3, 3, 40.00, 'Plano avançado podendo acessar até 3 telas ao mesmo tempo e com qualidade de streaming FullHD+.'),
+	(4, 4, 50.00, 'Plano completo com até 4 acessos simlutâneos e streaming com qualidade de vídeo 4K.');
+
+insert into Usuario values	
+    ('maria123@gmail.com', '123456', 'Maria Silva', 1),
+    ('jose456@gmail.com', '654321', 'José Santos', 1),
+    ('ana789@gmail.com', '987654', 'Ana Oliveira', 1),
+    ('joao987@gmail.com', '456789', 'João Souza', 1),
+    ('antonio321@gmail.com', '321654', 'Antônio Rodrigues', 1),
+    ('francisco654@gmail.com', '789321', 'Francisco Almeida', 1),
+    ('adriana123@gmail.com', '123789', 'Adriana Lima', 1),
+    ('luiz456@gmail.com', '456123', 'Luiz Pereira', 1),
+    ('fernanda789@gmail.com', '789456', 'Fernanda Carvalho', 1),
+    ('paulo987@gmail.com', '987123', 'Paulo Fernandes', 2),
+    ('marcia123@gmail.com', '123987', 'Márcia Gomes', 2),
+    ('pedro456@gmail.com', '456789', 'Pedro Martins', 2),
+    ('luciana789@gmail.com', '789123', 'Luciana Costa', 2),
+    ('carlos987@gmail.com', '987456', 'Carlos Araújo', 2),
+    ('aline123@gmail.com', '123456', 'Aline Ribeiro', 2),
+    ('rafael456@gmail.com', '456789', 'Rafael Barbosa', 2),
+    ('sandra789@gmail.com', '789123', 'Sandra Castro', 2),
+    ('roberto987@gmail.com', '987456', 'Roberto Freitas', 2),
+    ('camila123@gmail.com', '123789', 'Camila Machado', 3),
+    ('ricardo456@gmail.com', '456123', 'Ricardo Vasconcelos', 3),
+    ('simone789@gmail.com', '789456', 'Simone Melo', 3),
+    ('gustavo987@gmail.com', '987321', 'Gustavo Cardoso', 3),
+    ('patricia123@gmail.com', '123789', 'Patrícia Nunes', 3),
+    ('felipe456@gmail.com', '456123', 'Felipe Mendes', 3),
+    ('vanessa789@gmail.com', '789456', 'Vanessa Torres', 3),
+    ('fernando987@gmail.com', '987123', 'Fernando Moraes', 3),
+    ('marcela123@gmail.com', '123456', 'Marcela Cunha', 3),
+    ('andre456@gmail.com', '456789', 'André Marques', 4),
+    ('daniela789@gmail.com', '789123', 'Daniela Castro', 4),
+    ('ronaldo987@gmail.com', '987456', 'Ronaldo Miranda', 4),
+    ('larissa123@gmail.com', '123789', 'Larissa Ribeiro', 4),
+    ('arthur456@gmail.com', '456123', 'Arthur Santos', 4),
+    ('juliana789@gmail.com', '789456', 'Juliana Monteiro', 4),
+    ('cristiano987@gmail.com', '987321', 'Cristiano Ferreira', 4),
+    ('tatiana123@gmail.com', '123789', 'Tatiana Rocha', 4),
+    ('diego456@gmail.com', '456123', 'Diego Barros', 4),
+    ('mariana789@gmail.com', '789456', 'Mariana Sales', 4),
+    ('leonardo987@gmail.com', '987123', 'Leonardo Jesus', 4);
+
+INSERT INTO Genero (id, descricao, nome)
+VALUES 
+    (1, 'Filmes e séries que envolvem ação e aventura, com cenas de combate, perseguições e desafios emocionantes.', 'Ação'),
+    (2, 'Filmes e séries que se baseiam em histórias de aventura, explorando lugares desconhecidos, enfrentando desafios e superando obstáculos.', 'Aventura'),
+    (3, 'Filmes e séries que têm como objetivo fazer o público rir e se divertir, por meio de situações engraçadas e humorístico.', 'Comédia'),
+    (4, 'Filmes e séries que apresentam histórias intensas e emocionais, geralmente centradas em conflitos e dramas humanos.', 'Drama'),
+    (5, 'Filmes e séries que exploram relacionamentos amorosos e românticos, retratando histórias de amor e paixão.', 'Romance'),
+    (6, 'Filmes e séries que se passam em cenários futuristas ou com elementos científicos avançados, como viagens espaciais, tecnologias futuristas e avanços científicos.', 'Ficção Científica'),
+    (7, 'Filmes e séries que têm como objetivo assustar e criar suspense, utilizando elementos sobrenaturais, criaturas horripilantes e situações aterrorizantes.', 'Terror'),
+    (8, 'Filmes e séries que mantêm o espectador em suspense e tensão, geralmente envolvendo mistérios, reviravoltas e situações intrigantes.', 'Suspense'),
+    (9, 'Filmes e séries que se passam em mundos imaginários ou mágicos, com elementos fantásticos, criaturas míticas e poderes sobrenaturais.', 'Fantasia'),
+    (10, 'Filmes e séries animados que utilizam técnicas de animação para contar histórias, geralmente destinados a crianças, mas também podem ser apreciados por adultos.', 'Animação'),
+    (11, 'Filmes e séries que exploram eventos e fatos reais, documentando aspectos históricos, culturais, sociais, científicos ou biográficos.', 'Documentário'),
+    (12, 'Filmes e séries que se concentram em atividades criminais, como roubo, tráfico, investigações e a vida de gangsteres.', 'Crime'),
+    (13, 'Filmes e séries que envolvem mistérios e enigmas a serem resolvidos, mantendo o espectador intrigado e curioso até o desfecho.', 'Mistério'),
+    (14, 'Filmes e séries que apresentam números musicais e performances de canto e dança como parte integrante da narrativa.', 'Musical'),
+    (15, 'Filmes e séries destinados a um público familiar, geralmente adequados para todas as idades e que enfocam temas familiares, aventuras ou comédia.', 'Família'),
+    (16, 'Filmes e séries que se passam em épocas passadas, retratando eventos históricos ou épocas específicas da história humana.', 'História'),
+    (17, 'Filmes e séries que retratam conflitos e batalhas entre nações, geralmente centrados em guerras reais ou fictícias.', 'Guerra'),
+    (18, 'Filmes e séries que apresentam cenas de lutas coreografadas e artes marciais.', 'Ação e Aventura'),
+    (19, 'Filmes e séries que se passam em um contexto de artes marciais, destacando técnicas de luta e disciplina.', 'Artes Marciais'),
+    (20, 'Filmes e séries que têm como protagonistas super-heróis com habilidades especiais e que lutam contra o mal.', 'Super-heróis'),
+    (21, 'Filmes e séries que envolvem espionagem, agentes secretos e missões perigosas.', 'Espionagem'),
+    (22, 'Filmes e séries que combinam ação e suspense, com tramas cheias de reviravoltas e momentos de tensão.', 'Thriller de Ação'),
+    (23, 'Filmes e séries que se baseiam em histórias de aventura, explorando lugares desconhecidos, enfrentando desafios e superando obstáculos.', 'Aventura Emocionante'),
+    (24, 'Filmes e séries que se passam em mundos imaginários ou mágicos, com elementos fantásticos, criaturas míticas e poderes sobrenaturais.', 'Fantasia Irreal'),
+    (25, 'Filmes e séries que se passam em um cenário medieval, com castelos, cavaleiros e histórias de fantasia épica.', 'Fantasia Medieval'),
+    (26, 'Filmes e séries que retratam a luta pela sobrevivência em situações extremas, como naufrágios ou desastres naturais.', 'Sobrevivência'),
+    (27, 'Filmes e séries que exploram a descoberta de lugares desconhecidos, seja em busca de tesouros ou novos horizontes.', 'Exploração'),
+    (28, 'Filmes e séries que envolvem viagens no tempo, permitindo que os personagens alterem o passado ou o futuro.', 'Viagem no Tempo'),
+    (29, 'Filmes e séries que têm como objetivo fazer o público rir e se divertir, por meio de situações engraçadas e humorístico.', 'Comédia Ilimitada'),
+    (30, 'Filmes e séries que combinam elementos de romance e comédia, geralmente contando a história de um casal apaixonado.', 'Comédia Romântica'),
+    (31, 'Filmes e séries de ação que apresentam sequências cômicas e momentos engraçados em meio às situações de perigo.', 'Comédia de Ação'),
+    (32, 'Filmes e séries que exploram situações cômicas decorrentes de erros, mal-entendidos e confusões.', 'Comédia de Erros'),
+    (33, 'Filmes e séries que destacam a comédia nas interações e relacionamentos entre um grupo de amigos.', 'Comédia de Amigos'),
+    (34, 'Filmes e séries que satirizam ou fazem paródias de outros filmes, gêneros ou situações.', 'Comédia de Sátira'),
+    (35, 'Filmes e séries que apresentam histórias intensas e emocionais, geralmente centradas em conflitos e dramas humanos.', 'Drama Tenso'),
+    (36, 'Filmes e séries de drama que envolvem tramas criminais, investigações e ações ligadas ao mundo do crime.', 'Drama Criminal'),
+    (37, 'Filmes e séries de drama que se passam em épocas passadas, retratando eventos históricos importantes.', 'Drama Histórico'),
+    (38, 'Filmes e séries de drama que exploram os aspectos psicológicos dos personagens, suas emoções e conflitos internos.', 'Drama Psicológico'),
+    (39, 'Filmes e séries de drama que focam nas dinâmicas familiares, relacionamentos entre pais e filhos, irmãos e outras interações familiares.', 'Drama Familiar'),
+    (40, 'Filmes e séries de drama que se passam em épocas passadas, retratando eventos históricos importantes.', 'Drama de Época'),
+    (41, 'Filmes e séries que exploram relacionamentos amorosos e românticos, retratando histórias de amor e paixão.', 'Romance Meloso'),
+    (42, 'Filmes e séries românticos que se passam em épocas passadas, destacando a atmosfera e costumes da época.', 'Romance de Época'),
+    (43, 'Filmes e séries que combinam elementos de romance e drama, abordando relacionamentos complicados e desafios emocionais.', 'Romance Dramático'),
+    (44, 'Filmes e séries que mesclam romance e comédia, resultando em histórias leves e divertidas.', 'Romance Cômico'),
+    (45, 'Filmes e séries que exploram relacionamentos românticos entre personagens do mesmo sexo.', 'Romance LGBTQ+'),
+    (46, 'Filmes e séries que se passam em um cenário futurista ou com elementos de ficção científica, como tecnologias avançadas e sociedades distópicas.',	'Ficção Científica Irreal'),
+    (47, 'Filmes e séries de ficção científica que se passam no espaço sideral, explorando viagens espaciais e outros planetas.', 'Ficção Científica Espacial'),
+    (48, 'Filmes e séries que retratam sociedades futuristas distópicas, geralmente com governos autoritários e condições precárias de vida.', 'Distopia'),
+    (49, 'Filmes e séries de ficção científica que exploram um futuro onde a tecnologia avançada está integrada à vida cotidiana.', 'Cyberpunk'),
+    (50, 'Filmes e séries de ficção científica que abordam a viagem no tempo, com personagens viajando para o passado ou futuro.', 'Ficção Científica de Viagem no Tempo'),
+    (51, 'Filmes e séries que têm como objetivo assustar e criar suspense, utilizando elementos sobrenaturais, criaturas horripilantes e situações aterrorizantes.', 'Terror Pesado');
+
+insert into Filme values
+    -- Ação e Aventura
+    (1, 'Indiana Jones e Os Caçadores da Arca Perdida', 115, 4.5, 'Arqueólogo aventureiro busca a Arca da Aliança.', 1),
+    -- Artes Marciais
+    (2, 'O Tigre e o Dragão', 120, 4.3, 'Uma história de amor épica ambientada na China feudal.', 2),
+    -- Super-heróis
+    (3, 'Os Vingadores', 143, 4.7, 'Heróis se unem para proteger o mundo de ameaças.', 3),
+    -- Espionagem
+    (4, '007 - Operação Skyfall', 143, 4.2, 'Agente secreto James Bond enfrenta seu passado.', 4),
+    -- Thriller de Ação
+    (5, 'Duro de Matar', 132, 4.0, 'Um policial enfrenta terroristas em um arranha-céu.', 5),
+    -- Aventura
+    (6, 'Jurassic Park', 127, 4.4, 'Um parque de dinossauros se torna uma ameaça mortal.', 6),
+    -- Fantasia
+    (7, 'O Senhor dos Anéis: A Sociedade do Anel', 178, 4.8, 'Uma jornada épica para destruir um anel poderoso.', 7),
+    -- Fantasia Medieval
+    (8, 'Excalibur', 140, 4.1, 'A lenda do Rei Arthur e a busca pelo Santo Graal.', 8),
+    -- Sobrevivência
+    (9, 'Náufrago', 143, 4.3, 'Um homem luta para sobreviver em uma ilha deserta.', 9),
+    -- Exploração
+    (10, 'A Viagem de Chihiro', 125, 4.5, 'Uma menina é transportada para um mundo de espíritos.', 10),
+    -- Viagem no Tempo
+    (11, 'De Volta Para o Futuro', 116, 4.7, 'Um adolescente viaja no tempo com a ajuda de um cientista excêntrico.', 11),
+    -- Comédia
+    (12, 'Ace Ventura: Pet Detective', 86, 4.1, 'Um detetive de animais ajuda a encontrar um golfinho roubado.', 12),
+    -- Comédia Romântica
+    (13, 'Simplesmente Acontece', 102, 4.2, 'Dois melhores amigos percebem que são feitos um para o outro.', 13),
+    -- Comédia de Ação
+    (14, 'Deadpool', 108, 4.4, 'Um mercenário desfigurado busca vingança contra seu ex-empregador.', 14),
+    -- comédia de erros
+    (15, 'As Branquelas', 109, 4.0, 'Dois policiais disfarçados como socialites tentam resolver um sequestro.', 15),
+    -- Comédia de Amigos
+    (16, 'Se Beber, Não Case!', 100, 4.3, 'Um grupo de amigos acorda após uma festa de despedida de solteiro em Las Vegas sem lembrar do que aconteceu.', 16),
+    -- Comédia de Sátira
+    (17, 'Todo Mundo em Pânico', 88, 4.1, 'Uma paródia de filmes de terror populares.', 17),
+    -- Drama
+    (18, 'O Poderoso Chefão', 175, 4.8, 'A saga de uma família mafiosa ao longo de várias décadas.', 18),
+    -- Drama Criminal
+    (19, 'Os Bons Companheiros', 146, 4.6, 'A história real de uma gangue de Nova York e sua ascensão e queda no crime organizado.', 19),
+    -- Drama Histórico
+    (20, '12 Anos de Escravidão', 134, 4.5, 'A história de um homem livre que é sequestrado e vendido como escravo.', 20),
+    -- Drama Psicológico
+    (21, 'Cisne Negro', 108, 4.3, 'Uma bailarina compete pelo papel principal em uma produção de "O Lago dos Cisnes".', 21),
+    -- Drama Familiar
+    (22, 'Kramer vs. Kramer', 105, 4.2, 'Um pai e uma mãe lutam pela guarda do filho após o divórcio.', 22),
+    -- Drama de Época
+    (23, 'Orgulho e Preconceito', 129, 4.7, 'Uma história de amor entre uma mulher independente e um homem orgulhoso.', 23),
+    -- Romance
+    (24, 'Diário de uma Paixão', 123, 4.4, 'Um homem idoso conta a história de um amor proibido a uma mulher em um lar de idosos.', 24),
+    -- Romance de Época
+    (25, 'Desejo e Reparação', 123, 4.3, 'Uma jovem inventa uma mentira que afeta a vida de duas pessoas apaixonadas.', 25),
+    -- Romance Dramático
+    (26, 'Titanic', 194, 4.8, 'Um romance trágico entre dois passageiros a bordo do navio Titanic.', 26),
+    -- Romance Cômico
+    (27, 'Como Perder um Homem em 10 Dias', 116, 4.2, 'Um casal se envolve em um experimento para testar o amor e a paciência.', 27),
+    -- Romance LGBTQ+
+    (28, 'Me Chame Pelo Seu Nome', 132, 4.6, 'O romance entre um jovem e um estudante visitante durante um verão na Itália.', 28),
+    -- Ficção Científica 
+    (29, 'Blade Runner', 117, 4.5, 'Um policial caça androides humanóides em um futuro distópico.', 29),
+    -- Ficção Científica de Ação
+    (30, 'Matrix', 136, 4.8, 'Um hacker descobre a verdade por trás da realidade virtual.', 30),
+    -- Ficção Científica de Aventura
+    (31, 'Jurassic Park', 127, 4.4, 'Um parque de dinossauros se torna uma ameaça mortal.', 31),
+    -- Ficção Científica Pós-Apocalíptica
+    (32, 'Mad Max: Estrada da Fúria', 120, 4.7, 'Um guerreiro busca sobreviver em um deserto pós-apocalíptico.', 32),
+    -- Ficção Científica Distópica
+    (33, 'Divergente', 139, 4.1, 'Uma jovem descobre que não se encaixa nas categorias da sociedade futurista.', 33),
+    -- Terror
+    (34, 'O Exorcista', 122, 4.6, 'Uma mãe luta para salvar sua filha possuída por uma entidade demoníaca.', 34),
+    -- Terror Sobrenatural
+    (35, 'O Iluminado', 146, 4.7, 'Um escritor e sua família são assombrados por eventos sobrenaturais em um hotel isolado.', 35),
+    -- Terror Psicológico
+    (36, 'Cisne Negro', 108, 4.3, 'Uma bailarina compete pelo papel principal em uma produção de "O Lago dos Cisnes".', 36),
+    -- Suspense
+    (37, 'Psicose', 109, 4.5, 'Uma secretária foge com dinheiro roubado e encontra um motel sinistro.', 37),
+    -- Suspense de Ação
+    (38, 'Velocidade Máxima', 116, 4.2, 'Um policial tenta impedir um sequestrador que ameaça explodir um ônibus.', 38),
+    -- Suspense Policial
+    (39, 'Seven: Os Sete Crimes Capitais', 127, 4.6, 'Dois detetives perseguem um assassino que comete crimes baseados nos sete pecados capitais.', 39),
+    -- Suspense Psicológico
+    (40, 'O Sexto Sentido', 107, 4.4, 'Um menino que vê pessoas mortas busca a ajuda de um psicólogo.', 40),
+    -- Animação
+    (41, 'Toy Story', 81, 4.7, 'Os brinquedos ganham vida quando os humanos não estão por perto.', 41),
+    -- Animação Infantil
+    (42, 'Frozen: Uma Aventura Congelante', 102, 4.5, 'Uma princesa com poderes de gelo parte em uma jornada para salvar seu reino.', 42),
+    -- Animação 
+    (43, 'Up: Altas Aventuras', 96, 4.8, 'Um idoso parte em uma aventura em busca de seu sonho de infância.', 43),
+    -- Animação de Aventura
+    (44, 'Moana: Um Mar de Aventuras', 107, 4.6, 'Uma jovem se aventura pelo oceano em busca de uma ilha lendária.', 44),
+    -- Animação Fantástica
+    (45, 'A Bela e a Fera', 129, 4.7, 'Uma jovem se apaixona por uma fera amaldiçoada em um castelo encantado.', 45),
+    -- Animação Musical
+    (46, 'O Rei Leão', 88, 4.9, 'Um leão jovem deve assumir seu lugar como rei da savana.', 46),
+    -- Animação de Comédia
+    (47, 'Shrek', 90, 4.5, 'Um ogro relutante embarca em uma missão para resgatar uma princesa.', 47),
+    -- Animação de Ficção Científica
+    (48, 'Wall-E', 98, 4.6, 'Um robô solitário embarca em uma aventura no espaço em busca de sua verdadeira função.', 48),
+    -- Animação de Super-heróis
+    (49, 'Os Incríveis', 115, 4.8, 'Uma família de super-heróis luta contra um vilão perigoso.', 49),
+    -- Animação de Drama
+    (50, 'O Túmulo dos Vaga-Lumes', 89, 4.7, 'Dois irmãos lutam para sobreviver durante a Segunda Guerra Mundial.', 50);
+
+insert into Serie values
+    -- Drama
+    (1, 'Breaking Bad', 62, 4.8, 'Um professor de química se torna um dos maiores produtores de metanfetamina.', 18),
+    -- Drama Criminal
+    (2, 'True Detective', 24, 4.6, 'Dois detetives investigam casos sombrios e complexos ao longo dos anos.', 19),
+    -- Drama Histórico
+    (3, 'The Crown', 50, 4.7, 'A história da Rainha Elizabeth II e seu reinado.', 20),
+    -- Drama Psicológico
+    (4, 'Black Mirror', 22, 4.5, 'Uma série antológica que explora o impacto da tecnologia na sociedade.', 21),
+    -- Drama Familiar
+    (5, 'This Is Us', 90, 4.7, 'A história de uma família ao longo de várias décadas.', 22),
+    -- Drama de Época
+    (6, 'Peaky Blinders', 30, 4.8, 'Uma gangue de Birmingham no pós-Primeira Guerra Mundial.', 23),
+    -- Romance
+    (7, 'Outlander', 67, 4.6, 'Uma mulher viaja no tempo e se apaixona por um guerreiro escocês.', 24),
+    -- Romance de Época
+    (8, 'Bridgerton', 8, 4.4, 'As vidas e os amores da alta sociedade de Londres no século XIX.', 25),
+    -- Romance Dramático
+    (9, 'Grey''s Anatomy', 382, 4.7, 'A vida pessoal e profissional de médicos em um hospital.', 26),
+    -- Romance Cômico
+    (10, 'Friends', 236, 4.9, 'A vida e as aventuras de um grupo de amigos em Nova York.', 27),
+    -- Romance LGBTQ+
+    (11, 'Sense8', 24, 4.5, 'Oito pessoas ao redor do mundo estão conectadas mentalmente.', 28),
+    -- Ficção Científica
+    (12, 'Stranger Things', 34, 4.8, 'Um grupo de crianças enfrenta criaturas sobrenaturais em uma pequena cidade.', 29),
+    -- Ficção Científica de Ação
+    (13, 'The Mandalorian', 24, 4.7, 'Um caçador de recompensas protege uma criança com habilidades especiais.', 30),
+    -- Ficção Científica de Aventura
+    (14, 'Doctor Who', 169, 4.6, 'Um viajante do tempo e do espaço explora o universo em sua cabine telefônica.', 31),
+    -- Ficção Científica Pós-Apocalíptica
+    (15, 'The Walking Dead', 177, 4.5, 'Um grupo de sobreviventes luta contra zumbis em um mundo pós-apocalíptico.', 32),
+    -- Ficção Científica Distópica
+    (16, 'Black Mirror', 22, 4.7, 'Uma série antológica que explora o lado sombrio da tecnologia.', 33),
+    -- Ficção Científica de Fantasia
+    (17, 'Stranger Things', 34, 4.8, 'Crianças enfrentam criaturas sobrenaturais em uma cidade dos anos 80.', 34),
+    -- Ficção Científica de Super-heróis
+    (18, 'The Umbrella Academy', 20, 4.6, 'Um grupo de pessoas com habilidades especiais se reúne para salvar o mundo.', 35),
+    -- Ficção Científica de Comédia
+    (19, 'Rick and Morty', 41, 4.7, 'As aventuras de um cientista e seu neto em viagens interdimensionais.', 36),
+    -- Ficção Científica de Drama
+    (20, 'Westworld', 28, 4.5, 'Um parque temático habitado por robôs ganha vida própria.', 37),
+    -- Terror
+    (21, 'American Horror Story', 118, 4.8, 'Uma série antológica que explora diferentes histórias de horror.', 38),
+    -- Terror Sobrenatural
+    (22, 'Stranger Things', 34, 4.7, 'Crianças enfrentam criaturas sobrenaturais em uma cidade dos anos 80.', 39),
+    -- Terror Psicológico
+    (23, 'Hannibal', 39, 4.6, 'Um brilhante psiquiatra forense se envolve em jogos mentais com um assassino.', 40),
+    -- Terror de Suspense
+    (24, 'The Haunting of Hill House', 10, 4.8, 'Uma família enfrenta assombrações em uma mansão assombrada.', 41),
+    -- Terror de Zumbis
+    (25, 'The Walking Dead', 177, 4.7, 'Um grupo de sobreviventes luta contra zumbis em um mundo pós-apocalíptico.', 42),
+    -- Ação
+    (26, 'Game of Thrones', 73, 4.6, 'A luta pelo Trono de Ferro em um mundo de fantasia.', 43),
+    -- Ação de Espionagem
+    (27, 'La Casa de Papel', 31, 4.8, 'Um grupo de criminosos executa um grande assalto à Casa da Moeda.', 44),
+    -- Ação de Super-heróis
+    (28, 'Marvel''s Daredevil', 39, 4.7, 'Um advogado cego combate o crime nas ruas de Nova York.', 45),
+    -- Ação de Ficção Científica
+    (29, 'The Expanse', 56, 4.6, 'Uma conspiração interplanetária ameaça a paz na galáxia.', 46),
+    -- Ação de Aventura
+    (30, 'Vikings', 89, 4.8, 'As histórias do lendário guerreiro viking Ragnar Lothbrok.', 47),
+    -- Ação de Aventura Histórica
+    (31, 'Knightfall', 18, 4.7, 'A Ordem dos Templários na busca pelo Santo Graal.', 48),
+    -- Ação de Ficção Científica de Super-heróis
+    (32, 'The Boys', 16, 4.6, 'Um grupo de vigilantes luta contra super-heróis corruptos.', 49),
+    -- Ação de Fantasia
+    (33, 'The Witcher', 16, 4.8, 'As aventuras de Geralt de Rivia em um mundo de monstros e magia.', 50),
+    -- Animação
+    (34, 'Rick and Morty', 41, 4.7, 'As aventuras de um cientista e seu neto em viagens interdimensionais.', 51),
+    -- Animação de Comédia
+    (35, 'BoJack Horseman', 77, 4.6, 'A vida decadente de uma estrela de TV meio-humana, meio-cavalo.', 10),
+    -- Animação de Aventura
+    (36, 'Avatar: The Last Airbender', 61, 4.8, 'Um garoto com poderes de manipulação de elementos embarca em uma jornada para salvar o mundo.', 10),
+    -- Animação de Fantasia
+    (37, 'Castlevania', 32, 4.7, 'A luta de um caçador de vampiros contra o Conde Drácula.', 10),
+    -- Animação de Ficção Científica
+    (38, 'Futurama', 140, 4.6, 'As aventuras de um entregador de pizza no futuro distante.', 10),
+    -- Animação de Drama
+    (39, 'BoJack Horseman', 77, 4.8, 'A vida decadente de uma estrela de TV meio-humana, meio-cavalo.', 10),
+    -- Documentário
+    (40, 'Planet Earth', 11, 4.7, 'Uma exploração fascinante da natureza e dos animais em diferentes habitats.', 11),
+    -- Documentário Histórico
+    (41, 'The Vietnam War', 10, 4.6, 'Um documentário sobre a Guerra do Vietnã.', 11),
+    -- Documentário de Crimes
+    (42, 'Making a Murderer', 20, 4.8, 'A história real de um homem injustamente condenado por assassinato.', 11),
+    -- Documentário de Natureza
+    (43, 'Our Planet', 8, 4.7, 'Um olhar impressionante sobre os diversos ecossistemas do nosso planeta.', 11),
+    -- Documentário de Política
+    (44, 'The Final Year', 1, 4.6, 'Os bastidores da política mundial durante o último ano da administração Obama.', 11),
+    -- Documentário de Tecnologia
+    (45, 'The Social Dilemma', 1, 4.8, 'Um olhar alarmante sobre o impacto das redes sociais em nossas vidas.', 11),
+    -- Comédia Romântica
+    (46, 'Friends', 236, 4.7, 'A vida e as aventuras de um grupo de amigos em Nova York.', 30),
+    -- Comédia de Sitcom
+    (47, 'The Office', 201, 4.6, 'O cotidiano de funcionários de uma empresa de papel através de um falso documentário.', 33),
+    -- Comédia de Humor Negro
+    (48, 'Fargo', 40, 4.8, 'Uma série antológica com histórias envolvendo crime e violência em uma pequena cidade.', 33),
+    -- Comédia de Animação
+    (49, 'The Simpsons', 716, 4.7, 'As aventuras da família Simpsons na cidade de Springfield.', 33),
+    -- Comédia de Aventura
+    (50, 'Brooklyn Nine-Nine', 153, 4.6, 'As trapalhadas de um grupo de detetives em uma delegacia de polícia.', 31),
+    -- Comédia de Fantasia
+    (51, 'The Good Place', 53, 4.8, 'Um grupo de pessoas no pós-vida busca redenção em uma versão peculiar do paraíso.', 31),
+    -- Comédia de Ficção Científica
+    (52, 'Community', 110, 4.7, 'As desventuras de um grupo de estudantes em uma faculdade comunitária.', 31),
+    -- Comédia de Drama
+    (53, 'Orange Is the New Black', 91, 4.6, 'A vida de um grupo de detentas em uma prisão feminina.', 30),
+    -- Reality Show
+    (54, 'Survivor', 577, 4.8, 'Concorrentes competem em provas e desafios de sobrevivência em uma ilha deserta.', 4),
+    -- Reality Show de Competição
+    (55, 'RuPaul''s Drag Race', 182, 4.7, 'Drag queens competem em desafios para se tornarem a próxima superestrela drag.', 4),
+    -- Reality Show de Culinária
+    (56, 'MasterChef', 250, 4.6, 'Cozinheiros amadores competem em desafios culinários para se tornarem o próximo MasterChef.', 4);
+
+-- Indices
+
+create index idx_usuario_plano on usuario(plano);
+create index idx_filme_genero on filme(genero);
+create index idx_serie_genero on serie(genero);
+create index idx_genero on genero(nome);
+
+-- Views
+
+create view vw_filme_genero as 
+select fil.nome as Filme_nome, fil.duracao as Filme_duracao, fil.avaliacao as Filme_avaliacao, fil.sinopse as Filme_sinopse, gen.nome as Genero_nome, gen.descricao as Genero_descricao
+from filme fil join genero gen on fil.genero = gen.id;
+
+create view vw_serie_genero as 
+select sr.nome as Serie_nome, sr.qtd_episodios as Qtd_episodios, sr.avaliacao as Avaliacao, sr.sinopse as Serie_sinopse, gen.nome as Genero_nome, gen.descricao as Genero_descricao
+from serie sr join genero gen on sr.genero = gen.id;
+
+create view vw_exibe_filme as
+select fil.nome as Filme_nome, fil.duracao as Filme_duracao, fil.avaliacao as Filme_avaliacao, fil.sinopse as Filme_sinopse, gen.nome as Genero_nome, gen.descricao as Genero_descricao
+from filme fil JOIN genero gen ON fil.genero = gen.id;
+   
+create view vw_exibe_serie as 
+select sr.nome as Serie_nome, sr.qtd_episodios as Qtd_episodios, sr.avaliacao as Avaliacao, sr.sinopse as Serie_sinopse, gen.nome as Genero_nome, gen.descricao as Genero_descricao
+from serie sr JOIN genero gen ON sr.genero = gen.id;
+
+-- Triggers
+
+create or replace function fc_insere_filme() returns trigger as $$
+declare aux_gen int; aux_fil int;
+begin
+	aux_gen := (select id from genero where nome = new.genero_nome);
+	aux_fil := (select id from filme where nome = new.filme_nome);
+	if aux_fil is NULL then 
+		if aux_gen is null then
+			aux_gen := (select max(id)+1 from genero);	
+			insert into genero values
+					(aux_gen, new.genero_descricao, new.genero_nome);
+		end if;
+		aux_fil := (select max(id) from filme)+1;
+		insert into filme values
+			(aux_fil, new.filme_nome, new.filme_duracao, new.filme_avaliacao, new.filme_sinopse, aux_gen);
+	else
+		raise notice 'Esse filme já está cadastrado!';
+	end if;	
+	return new;
+end;
+$$ language plpgsql;
+
+create or replace function fc_insere_serie() returns trigger as $$
+declare aux_gen int; aux_sr int;
+begin
+	aux_gen := (select id from genero where nome = new.genero_nome);
+	aux_sr := (select id from serie where nome = new.serie_nome);
+	if aux_sr is NULL then 
+		if aux_gen is null then
+			aux_gen := (select max(id)+1 from genero);	
+			insert into genero values
+					(aux_gen, new.genero_descricao, new.genero_nome);
+		end if;
+		aux_sr := (select max(id) from serie)+1;
+		insert into serie values
+			(aux_sr, new.Serie_nome, new.Qtd_episodios, new.Avaliacao, new.Serie_sinopse, aux_gen);
+	else
+		raise notice 'Essa série já está cadastrada!';
+	end if;
+	return new;
+end;
+$$ language plpgsql;
+
+create trigger tg_insere_serie instead of insert on vw_serie_genero
+for each row execute procedure fc_insere_serie();
+
+create or replace function fc_backup_serie() returns trigger as $$
+BEGIN
+	insert into backup_serie(id_serie, nome, qtd_episodios, avaliacao, sinopse, genero, data_backup, usuario_backup)
+		values(OLD.id, OLD.nome, OLD.qtd_episodios, OLD.avaliacao, OLD.sinopse, OLD.genero, CURRENT_TIMESTAMP, CURRENT_USER);
+	RETURN NULL;
+END; $$ LANGUAGE PLPGSQL;
+	
+create trigger tg_backup_serie after delete on serie 
+for each row execute procedure fc_backup_serie();
+
+create or replace function fc_backup_filme() returns trigger as $$
+BEGIN
+	insert into backup_filme(id_filme, nome, duracao, avaliacao, sinopse, genero, data_backup, usuario_backup)
+		values(OLD.id, OLD.nome, OLD.duracao, OLD.avaliacao, OLD.sinopse, OLD.genero, CURRENT_TIMESTAMP, CURRENT_USER);
+	RETURN NULL;
+END; 
+$$ LANGUAGE PLPGSQL;
+
+create trigger tg_backup_filme after delete on filme 
+for each row execute procedure fc_backup_filme(); 
+
+-- Criação dos usuarios
+
+CREATE ROLE gustavo WITH
+LOGIN
+PASSWORD '1234';
+
+GRANT SELECT ON vw_exibe_serie TO gustavo;
+GRANT SELECT ON vw_exibe_filme TO gustavo;
+
+CREATE ROLE admin WITH
+LOGIN
+PASSWORD 'admin';
+
+GRANT ALL on backup_filme to admin;
+GRANT ALL on backup_serie to admin;
+GRANT ALL on filme to admin;
+GRANT ALL on serie to admin;
+GRANT ALL on genero to admin;
+GRANT ALL on plano to admin;
+GRANT ALL on usuario to admin;
+GRANT ALL on vw_filme_genero to admin;
+GRANT ALL on vw_serie_genero to admin;
+GRANT ALL on vw_exibe_filme to admin;
+GRANT ALL on vw_exibe_serie to admin;
