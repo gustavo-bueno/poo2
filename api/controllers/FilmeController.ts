@@ -6,7 +6,8 @@ export class FilmeController {
   public static getFilmes(request: Request, response: Response) {
     pool.query<Filme>("SELECT * FROM Filme", (error, results) => {
       if (error) {
-        throw error;
+        response.status(500).send("Um erro aconteceu");
+        return;
       }
       response.status(200).json(results.rows);
     });
@@ -20,7 +21,8 @@ export class FilmeController {
       [id],
       (error, results) => {
         if (error) {
-          throw error;
+          response.status(500).send("Um erro aconteceu");
+          return;
         }
 
         response.status(200).json(results.rows);
@@ -43,7 +45,8 @@ export class FilmeController {
       [id, nome, duracao, sinopse, avaliacao, genero],
       (error) => {
         if (error) {
-          throw error;
+          response.status(500).send("Um erro aconteceu");
+          return;
         }
 
         response.status(201).send("Filme criado com sucesso!");
@@ -59,7 +62,8 @@ export class FilmeController {
       [nome, sinopse, duracao, avaliacao, genero, id],
       (error) => {
         if (error) {
-          throw error;
+          response.status(500).send("Um erro aconteceu");
+          return;
         }
 
         response.status(201).send("Filme editado com sucesso!");
@@ -72,7 +76,7 @@ export class FilmeController {
 
     pool.query("DELETE FROM Filme WHERE id = $1", [id], (error) => {
       if (error) {
-        throw error;
+        response.status(500).send("Um erro aconteceu");
       }
       response.status(200).send(`Filme de id ${id} deletado com sucesso!`);
     });
@@ -81,7 +85,7 @@ export class FilmeController {
   public static getFilmesComGenero(request: Request, response: Response) {
     pool.query<Filme>("SELECT * FROM vw_filme_genero", (error, results) => {
       if (error) {
-        throw error;
+        response.status(500).send("Um erro aconteceu");
       }
       response.status(200).json(results.rows);
     });

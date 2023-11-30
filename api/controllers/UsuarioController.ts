@@ -6,7 +6,8 @@ export class UsuarioController {
   public static getUsuarios(request: Request, response: Response) {
     pool.query<Usuario>("SELECT * FROM Usuario", (error, results) => {
       if (error) {
-        throw error;
+        response.status(500).send("Um erro aconteceu");
+        return;
       }
       response.status(200).json(results.rows);
     });
@@ -20,7 +21,8 @@ export class UsuarioController {
       [email],
       (error, results) => {
         if (error) {
-          throw error;
+          response.status(500).send("Um erro aconteceu");
+          return;
         }
 
         response.status(200).json(results.rows);
@@ -36,7 +38,8 @@ export class UsuarioController {
       [nome, email, senha, planoId],
       (error) => {
         if (error) {
-          throw error;
+          response.status(500).send("Um erro aconteceu");
+          return;
         }
 
         response.status(201).send("Usuário criado com sucesso!");
@@ -52,7 +55,8 @@ export class UsuarioController {
       [nome, email, senha, planoId],
       (error) => {
         if (error) {
-          throw error;
+          response.status(500).send("Um erro aconteceu");
+          return;
         }
 
         response.status(201).send("Usuário editado com sucesso!");
@@ -65,7 +69,8 @@ export class UsuarioController {
 
     pool.query("DELETE FROM Usuario WHERE email = $1", [email], (error) => {
       if (error) {
-        throw error;
+        response.status(500).send("Um erro aconteceu");
+        return;
       }
       response.status(200).send(`User deleted with Email: ${email}`);
     });

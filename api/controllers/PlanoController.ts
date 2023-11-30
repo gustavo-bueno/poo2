@@ -6,7 +6,8 @@ export class PlanoController {
   public static getPlanos(request: Request, response: Response) {
     pool.query<Plano>("SELECT * FROM Plano", (error, results) => {
       if (error) {
-        throw error;
+        response.status(500).send("Um erro aconteceu");
+        return;
       }
       response.status(200).json(results.rows);
     });
@@ -20,7 +21,8 @@ export class PlanoController {
       [id],
       (error, results) => {
         if (error) {
-          throw error;
+          response.status(500).send("Um erro aconteceu");
+          return;
         }
 
         response.status(200).json(results.rows);
@@ -36,7 +38,8 @@ export class PlanoController {
       [id, qtd_conexoes, preco, descricao],
       (error) => {
         if (error) {
-          throw error;
+          response.status(500).send("Um erro aconteceu");
+          return;
         }
 
         response.status(201).send("Plano criado com sucesso!");
@@ -52,7 +55,8 @@ export class PlanoController {
       [qtd_conexoes, descricao, preco, id],
       (error) => {
         if (error) {
-          throw error;
+          response.status(500).send("Um erro aconteceu");
+          return;
         }
 
         response.status(201).send("Plano editado com sucesso!");
@@ -65,7 +69,8 @@ export class PlanoController {
 
     pool.query("DELETE FROM Plano WHERE id = $1", [id], (error) => {
       if (error) {
-        throw error;
+        response.status(500).send("Um erro aconteceu");
+        return;
       }
       response.status(200).send(`Plano de id ${id} deletado com sucesso!`);
     });

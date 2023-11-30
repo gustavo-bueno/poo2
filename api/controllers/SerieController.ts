@@ -6,8 +6,10 @@ export class SerieController {
   public static getSeries(request: Request, response: Response) {
     pool.query<Serie>("SELECT * FROM Serie", (error, results) => {
       if (error) {
-        throw error;
+        response.status(500).send("Um erro aconteceu");
+        return;
       }
+
       response.status(200).json(results.rows);
     });
   }
@@ -20,7 +22,8 @@ export class SerieController {
       [id],
       (error, results) => {
         if (error) {
-          throw error;
+          response.status(500).send("Um erro aconteceu");
+          return;
         }
 
         response.status(200).json(results.rows);
@@ -37,7 +40,8 @@ export class SerieController {
       [id, nome, qtd_episodios, sinopse, avaliacao, genero],
       (error) => {
         if (error) {
-          throw error;
+          response.status(500).send("Um erro aconteceu");
+          return;
         }
 
         response.status(201).send("Serie criado com sucesso!");
@@ -54,7 +58,8 @@ export class SerieController {
       [nome, sinopse, qtd_episodios, avaliacao, genero, id],
       (error) => {
         if (error) {
-          throw error;
+          response.status(500).send("Um erro aconteceu");
+          return;
         }
 
         response.status(201).send("Serie editado com sucesso!");
@@ -67,7 +72,8 @@ export class SerieController {
 
     pool.query("DELETE FROM Serie WHERE id = $1", [id], (error) => {
       if (error) {
-        throw error;
+        response.status(500).send("Um erro aconteceu");
+        return;
       }
       response.status(200).send(`Serie de id ${id} deletado com sucesso!`);
     });
@@ -76,7 +82,8 @@ export class SerieController {
   public static getSeriesComGenero(request: Request, response: Response) {
     pool.query<Serie>("SELECT * FROM vw_serie_genero", (error, results) => {
       if (error) {
-        throw error;
+        response.status(500).send("Um erro aconteceu");
+        return;
       }
       response.status(200).json(results.rows);
     });
