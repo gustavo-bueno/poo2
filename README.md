@@ -1,6 +1,6 @@
 # Requisitos para rodar a aplicação:
 
-Obs: Rodar Script de BD antes de rodar o projeto
+Obs: Rodar Script de BD no PostgreSQL antes de rodar o projeto
 
 # Backend
 
