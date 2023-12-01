@@ -482,15 +482,6 @@ $$ LANGUAGE PLPGSQL;
 create trigger tg_backup_filme after delete on filme 
 for each row execute procedure fc_backup_filme(); 
 
--- Criação dos usuarios
-
-CREATE ROLE gustavo WITH
-LOGIN
-PASSWORD '1234';
-
-GRANT SELECT ON vw_exibe_serie TO gustavo;
-GRANT SELECT ON vw_exibe_filme TO gustavo;
-
 CREATE ROLE admin WITH
 LOGIN
 PASSWORD 'admin';
