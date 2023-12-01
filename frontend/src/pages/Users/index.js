@@ -54,6 +54,7 @@ export const Users = () => {
       title: "Senha",
       dataIndex: "senha",
       key: "senha",
+      render: (senha) => senha.split("").map(() => "•"),
     },
     {
       title: "Plano",
